@@ -674,6 +674,17 @@ test("navigating turbo-frame[data-turbo-action=advance] with Turbo.visit pushes 
   expect(pathname(page.url())).toEqual(path)
 })
 
+test("navigating turbo-frame without advance with Turbo.visit specifying advance pushes URL state", async ({ page }) => {
+  const path = "/src/tests/fixtures/frames/frame.html"
+
+  await page.evaluate((path) => window.Turbo.visit(path, { frame: "frame", action: "advance" }), path)
+  await nextEventNamed(page, "turbo:load")
+
+  await expect(page.locator("h1")).toHaveText("Frames")
+  await expect(page.locator("#frame h2")).toHaveText("Frame: Loaded")
+  expect(pathname(page.url())).toEqual(path)
+})
+
 test("navigating turbo-frame[data-turbo-action=advance] to the same URL clears the [aria-busy] and [data-turbo-preview] state", async ({
   page
 }) => {
