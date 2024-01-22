@@ -98,8 +98,8 @@ export class Session {
     const frameElement = options.frame ? document.getElementById(options.frame) : null
 
     if (frameElement instanceof FrameElement) {
+      frameElement.delegate.proposeVisitIfNavigatedWithAction(frameElement)
       frameElement.src = location.toString()
-      frameElement.loaded
     } else {
       this.navigator.proposeVisit(expandURL(location), options)
     }
